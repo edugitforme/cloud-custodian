@@ -1,0 +1,23 @@
+{
+    "status_code": 200,
+    "data": {
+        "Instances": [
+            {
+                "Id": "aws:eks:us-east-1:644160558196:cluster/ins1",
+                "Attributes": {
+                    "AWS_INSTANCE_CNAME": "ecs-proxy.ec1.us-east-1.local",
+                    "AWS_INSTANCE_IPV4" : "10.11.12.14"
+
+                }
+            },
+            {
+                "Id": "aws:elasticache:us-east-1:644160558196:ins2",
+                "Attributes": {
+                    "AWS_INSTANCE_CNAME": "ecs-proxy.ec1.us-east-1.local",
+                    "AWS_INSTANCE_IPV4" : "10.11.12.14"
+                }
+            }
+        ],
+        "ResponseMetadata": {}
+    }
+}

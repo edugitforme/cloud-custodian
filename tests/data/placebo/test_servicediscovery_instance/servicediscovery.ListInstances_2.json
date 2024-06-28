@@ -1,0 +1,14 @@
+{
+    "status_code": 200,
+    "data": {
+        "Instances": [
+            {
+                "Id": "app.datadog-proxy",
+                "Attributes": {
+                    "AWS_INSTANCE_CNAME": "ecs-proxy.ec1.us-east-1.local"
+                }
+            }
+        ],
+        "ResponseMetadata": {}
+    }
+}

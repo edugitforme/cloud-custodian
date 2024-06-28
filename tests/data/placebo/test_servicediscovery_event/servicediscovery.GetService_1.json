@@ -1,0 +1,25 @@
+{
+    "status_code": 200,
+    "data": {
+        "Service": {
+            "Id": "srv-1",
+            "Arn": "arn:aws:servicediscovery:us-east-1:644160558196:service/srv-1",
+            "Name": "service1",
+            "NamespaceId": "ns-1",
+            "DnsConfig": {
+                "NamespaceId": "ns-1",
+                "RoutingPolicy": "WEIGHTED",
+                "DnsRecords": [
+                    {
+                        "Type": "CNAME",
+                        "TTL": 10
+                    }
+                ]
+            },
+            "Type": "DNS_HTTP",
+            "CreateDate": "2023-11-03T02:36:27.877000+00:00",
+            "CreatorRequestId": "terraform-2024041915345708160000001a"
+        },
+        "ResponseMetadata": {}
+    }
+}

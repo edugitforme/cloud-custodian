@@ -1,0 +1,36 @@
+{
+    "status_code": 200,
+    "data": {
+        "PaginationToken": "",
+        "ResourceTagMappingList": [
+            {
+                "ResourceARN": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualService/vs1.m1.us-east-1.local",
+                "Tags": [
+                    {
+                        "Key": "MODULE_NAME",
+                        "Value": "ecs-application"
+                    },
+
+                    {
+                        "Key": "ECS_APPLICATION",
+                        "Value": "ec1"
+                    }
+                ]
+            },
+            {
+                "ResourceARN": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualService/vs2.m1.us-east-1.local",
+                "Tags": [
+                    {
+                        "Key": "MODULE_NAME",
+                        "Value": "ecs-application"
+                    },
+                    {
+                        "Key": "ECS_APPLICATION",
+                        "Value": "ec1"
+                    }
+                ]
+            }
+        ],
+        "ResponseMetadata": {}
+    }
+}

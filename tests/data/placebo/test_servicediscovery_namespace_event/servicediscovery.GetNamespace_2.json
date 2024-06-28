@@ -1,0 +1,22 @@
+{
+    "status_code": 200,
+    "data": {
+        "Namespace": {
+            "Id": "ns-2",
+            "Arn": "arn:aws:servicediscovery:us-east-1:644160558196:namespace/ns-2",
+            "Name": "testEc2Cluster",
+            "Type": "HTTP",
+            "Properties": {
+                "DnsProperties": {
+                    "SOA": {}
+                },
+                "HttpProperties": {
+                    "HttpName": "testEc2Cluster"
+                }
+            },
+            "CreateDate": "2023-11-03T02:36:27.877000+00:00",
+            "CreatorRequestId": "testEc2Cluster"
+        },
+        "ResponseMetadata": {}
+    }
+}

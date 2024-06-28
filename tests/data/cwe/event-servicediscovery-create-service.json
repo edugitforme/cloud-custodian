@@ -1,0 +1,83 @@
+{
+    "eventVersion": "1.08",
+    "userIdentity": {
+        "type": "IAMUser",
+        "principalId": "00000",
+        "arn": "arn:aws:iam::00000:robot",
+        "accountId": "00000",
+        "accessKeyId": "XXXXXXXXXXXXXXXXX",
+        "sessionContext": {
+            "sessionIssuer": {},
+            "webIdFederationData": {},
+            "attributes": {
+                "creationDate": "2023-11-05T04:25:03Z",
+                "mfaAuthenticated": "true"
+            }
+        }
+    },
+    "eventTime": "2023-11-05T04:29:11Z",
+    "eventSource": "servicediscovery.amazonaws.com",
+    "eventName": "CreateService",
+    "awsRegion": "eu-east-1",
+    "sourceIPAddress": "81.101.58.184",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+    "requestParameters": {
+        "name": "service1",
+        "creatorRequestId": "terraform-20240523135409865300000021",
+        "dnsConfig": {
+            "namespaceId": "ns-1",
+            "routingPolicy": "WEIGHTED",
+            "dnsRecords": [
+                {
+                    "type": "CNAME",
+                    "tTL": 10
+                }
+            ]
+        },
+        "tags": [
+            {
+                "key": "ECS_CLUSTER",
+                "value": "EC1"
+            },
+            {
+                "key": "MODULE_NAME",
+                "value": "ecs-cluster"
+            }
+        ]
+    },
+    "responseElements": {
+        "service": {
+            "id": "srv-1",
+            "arn": "arn:aws:servicediscovery:us-east-1:644160558196:service/srv-1",
+            "name": "service1",
+            "namespaceId": "ns-1",
+            "dnsConfig": {
+                "namespaceId": "ns-1",
+                "routingPolicy": "WEIGHTED",
+                "dnsRecords": [
+                    {
+                        "type": "CNAME",
+                        "tTL": 10
+                    }
+                ]
+            },
+            "type": "DNS_HTTP",
+            "createDate": "May 23, 2024 1:54:09 PM",
+            "creatorRequestId": "terraform-20240523135409865300000021"
+        }
+    },
+    "requestID": "665077e1-c131-4194-8ec1-de6201d7f79f",
+    "eventID": "3fa01fd9-3537-4cc0-88b0-a2dc297b5839",
+    "readOnly": false,
+    "eventType": "AwsApiCall",
+    "apiVersion": "2019-01-25",
+    "managementEvent": true,
+    "recipientAccountId": "00000",
+    "eventCategory": "Management",
+    "tlsDetails": {
+        "tlsVersion": "TLSv1.3",
+        "cipherSuite": "TLS_AES_128_GCM_SHA256",
+        "clientProvidedHostHeader": "servicediscovery.us-east-1.amazonaws.com"
+    },
+    "sessionCredentialFromConsole": "true"
+}

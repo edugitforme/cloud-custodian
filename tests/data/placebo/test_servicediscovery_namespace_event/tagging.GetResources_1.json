@@ -1,0 +1,35 @@
+{
+    "status_code": 200,
+    "data": {
+        "PaginationToken": "",
+        "ResourceTagMappingList": [
+            {
+                "ResourceARN": "arn:aws:servicediscovery:us-east-1:644160558196:namespace/ns-1",
+                "Tags": [
+                    {
+                        "Key": "MODULE_NAME",
+                        "Value": "ecs-cluster"
+                    },
+                    {
+                        "Key": "ECS_CLUSTER",
+                        "Value": "EC1"
+                    }
+                ]
+            },
+            {
+                "ResourceARN": "arn:aws:servicediscovery:us-east-1:644160558196:namespace/ns-2",
+                "Tags": [
+                    {
+                        "Key": "MODULE_NAME",
+                        "Value": "ecs-cluster"
+                    },
+                    {
+                        "Key": "ECS_CLUSTER",
+                        "Value": "EC1"
+                    }
+                ]
+            }
+        ],
+        "ResponseMetadata": {}
+    }
+}

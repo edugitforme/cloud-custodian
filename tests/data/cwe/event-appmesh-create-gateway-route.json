@@ -1,0 +1,122 @@
+{
+    "eventVersion": "1.08",
+    "userIdentity": {
+        "type": "IAMUser",
+        "principalId": "0000",
+        "arn": "arn:aws:iam::0000:robot",
+        "accountId": "0000",
+        "accessKeyId": "xxxxxxxxxxx",
+        "sessionContext": {
+            "sessionIssuer": {},
+            "webIdFederationData": {},
+            "attributes": {
+                "creationDate": "2023-11-02T23:42:36Z",
+                "mfaAuthenticated": "true"
+            }
+        }
+    },
+    "eventTime": "2023-11-03T03:05:26Z",
+    "eventSource": "appmesh.amazonaws.com",
+    "eventName": "CreateGatewayRoute",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "81.101.58.184",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+    "requestParameters": {
+        "gatewayRouteName": "gr1",
+        "meshName": "m1",
+        "virtualGatewayName": "vg1",
+        "spec": {
+            "httpRoute": {
+                "match": {
+                    "prefix": "/",
+                    "hostname": {
+                        "suffix": "*.test.aws.net"
+                    }
+                },
+                "action": {
+                    "target": {
+                        "virtualService": {
+                            "virtualServiceName": "vs1"
+                        }
+                    },
+                    "rewrite": {
+                        "prefix": {
+                            "defaultPrefix": "DISABLED"
+                        },
+                        "hostname": {
+                            "defaultTargetHostname": "DISABLED"
+                        }
+                    }
+                }
+            }
+        },
+        "tags": [
+            {
+                "key": "MODULE_NAME",
+                "value": "ecs-application"
+            },
+            {
+                "key": "ECS_APPLICATION",
+                "value": "ec1"
+            }
+        ]
+    },
+    "responseElements": {
+        "gatewayRoute": {
+            "meshName": "m1",
+            "gatewayRouteName": "gr1",
+            "virtualGatewayName": "gateway",
+            "spec": {
+                "httpRoute": {
+                    "match": {
+                        "prefix": "/",
+                        "hostname": {
+                            "suffix": "*.test.aws.net"
+                        }
+                    },
+                    "action": {
+                        "target": {
+                            "virtualService": {
+                                "virtualServiceName": "vs1"
+                            }
+                        },
+                        "rewrite": {
+                            "prefix": {
+                                "defaultPrefix": "DISABLED"
+                            },
+                            "hostname": {
+                                "defaultTargetHostname": "DISABLED"
+                            }
+                        }
+                    }
+                }
+            },
+            "metadata": {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualGateway/vg1/gatewayRoute/gr1",
+                "version": 1,
+                "uid": "1526d1be-b4b6-40c0-bfc8-0e1f95c0a23a",
+                "createdAt": "May 24, 2024, 7:33:10 AM",
+                "lastUpdatedAt": "May 24, 2024, 7:33:10 AM",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558198"
+            },
+            "status": {
+                "status": "ACTIVE"
+            }
+        }
+    },
+    "requestID": "a1304097-353a-4ac3-ab1f-f0dce184d956",
+    "eventID": "2d10d78e-05c4-4069-8d7b-dec836faf67d",
+    "readOnly": false,
+    "eventType": "AwsApiCall",
+    "apiVersion": "2019-01-25",
+    "managementEvent": true,
+    "recipientAccountId": "0000",
+    "eventCategory": "Management",
+    "tlsDetails": {
+        "tlsVersion": "TLSv1.3",
+        "cipherSuite": "TLS_AES_128_GCM_SHA256",
+        "clientProvidedHostHeader": "appmesh.eu-east-1.amazonaws.com"
+    },
+    "sessionCredentialFromConsole": "true"
+}

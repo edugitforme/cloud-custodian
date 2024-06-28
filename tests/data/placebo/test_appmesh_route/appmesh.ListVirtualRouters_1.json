@@ -1,0 +1,28 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "virtualRouters": [
+            {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualRouter/vr1",
+                "createdAt": "2023-11-03T02:36:27.877000+00:00",
+                "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
+                "meshName": "m1",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558196",
+                "version": 1,
+                "virtualRouterName": "vr1"
+            },
+            {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualRouter/vr2",
+                "createdAt": "2023-11-03T02:36:27.877000+00:00",
+                "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
+                "meshName": "m1",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558198",
+                "version": 1,
+                "virtualRouterName": "vr2"
+            }
+        ]
+    }
+}

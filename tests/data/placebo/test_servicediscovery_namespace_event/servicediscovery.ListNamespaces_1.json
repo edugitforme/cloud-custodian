@@ -1,0 +1,46 @@
+{
+    "status_code": 200,
+    "data": {
+        "Namespaces": [
+            {
+                "Id": "ns-1",
+                "Arn": "arn:aws:servicediscovery:us-east-1:644160558196:namespace/ns-1",
+                "Name": "testnik",
+                "Type": "DNS_PRIVATE",
+                "Description": "all services will be registered under this common namespace",
+                "Properties": {
+                    "DnsProperties": {
+                        "HostedZoneId": "Z03288441NHEED4TM6QWT",
+                        "SOA": {
+                            "TTL": 15
+                        }
+                    },
+                    "HttpProperties": {
+                        "HttpName": "testnik.local"
+                    }
+                },
+                "CreateDate": "2023-11-03T02:36:27.877000+00:00"
+            },
+            {
+                "Id": "ns-2",
+                "Arn": "arn:aws:servicediscovery:us-east-1:644160558196:namespace/ns-2",
+                "Name": "o302584-ecs-hello.us-east-1.local",
+                "Type": "DNS_PRIVATE",
+                "Description": "all services will be registered under this common namespace",
+                "Properties": {
+                    "DnsProperties": {
+                        "HostedZoneId": "Z06609821RDQESRE83HF",
+                        "SOA": {
+                            "TTL": 15
+                        }
+                    },
+                    "HttpProperties": {
+                        "HttpName": "o302584-ecs-hello.us-east-1.local"
+                    }
+                },
+                "CreateDate": "2023-11-03T02:36:27.877000+00:00"
+            }
+        ],
+        "ResponseMetadata": {}
+    }
+}

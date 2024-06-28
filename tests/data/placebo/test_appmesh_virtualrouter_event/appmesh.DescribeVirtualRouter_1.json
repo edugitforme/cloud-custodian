@@ -2,35 +2,31 @@
     "status_code": 200,
     "data": {
         "ResponseMetadata": {},
-        "virtualGateway": {
+        "virtualRouter": {
             "meshName": "m1",
             "metadata": {
-                "arn": "arn:aws:appmesh:eu-west-2:123456789012:mesh/m1/virtualGateway/g1",
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualRouter/vr1",
                 "createdAt": "2023-11-03T02:36:27.877000+00:00",
                 "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
                 "meshOwner": "644160558196",
-                "resourceOwner": "644160558197",
-                "uid": "80ee4027-c8e1-49e8-99ba-cace20a57f0b",
+                "resourceOwner": "644160558198",
+                "uid": "1355d652-663d-4862-9217-53c106a75272",
                 "version": 1
             },
             "spec": {
-                "backendDefaults": {
-                    "clientPolicy": {}
-                },
                 "listeners": [
                     {
                         "portMapping": {
-                            "port": 123,
+                            "port": 8080,
                             "protocol": "http"
                         }
                     }
-                ],
-                "logging": {}
+                ]
             },
             "status": {
                 "status": "ACTIVE"
             },
-            "virtualGatewayName": "g1"
+            "virtualRouterName": "vr1"
         }
     }
 }

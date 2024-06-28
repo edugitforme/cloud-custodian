@@ -1,0 +1,49 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "gatewayRoute": {
+            "gatewayRouteName": "gr1",
+            "meshName": "m1",
+            "metadata": {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualGateway/vg1/gatewayRoute/gr1",
+                "createdAt": "2023-11-03T02:36:27.877000+00:00",
+                "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558198",
+                "uid": "4bcb98dc-2168-4dcc-a9ba-cbbcddbb55f8",
+                "version": 1
+            },
+            "spec": {
+                "httpRoute": {
+                    "action": {
+                        "rewrite": {
+                            "hostname": {
+                                "defaultTargetHostname": "DISABLED"
+                            },
+                            "prefix": {
+                                "defaultPrefix": "DISABLED"
+                            }
+                        },
+                        "target": {
+                            "port": 8080,
+                            "virtualService": {
+                                "virtualServiceName": "vs1"
+                            }
+                        }
+                    },
+                    "match": {
+                        "hostname": {
+                            "exact": "ec1.test.aws.net"
+                        },
+                        "prefix": "/"
+                    }
+                }
+            },
+            "status": {
+                "status": "ACTIVE"
+            },
+            "virtualGatewayName": "vg1"
+        }
+    }
+}

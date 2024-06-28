@@ -1,0 +1,46 @@
+{
+    "status_code": 200,
+    "data": {
+        "Services": [
+            {
+                "Id": "srv-1",
+                "Arn": "arn:aws:servicediscovery:us-east-1:644160558196:service/srv-1",
+                "Name": "service1",
+                "Type": "DNS_HTTP",
+                "DnsConfig": {
+                    "RoutingPolicy": "MULTIVALUE",
+                    "DnsRecords": [
+                        {
+                            "Type": "A",
+                            "TTL": 10
+                        }
+                    ]
+                },
+                "HealthCheckCustomConfig": {
+                    "FailureThreshold": 1
+                },
+                "CreateDate": "2023-11-03T02:36:27.877000+00:00"
+            },
+            {
+                "Id": "srv-2",
+                "Arn": "arn:aws:servicediscovery:us-east-1:644160558196:service/srv-2",
+                "Name": "service2",
+                "Type": "DNS_HTTP",
+                "DnsConfig": {
+                    "RoutingPolicy": "MULTIVALUE",
+                    "DnsRecords": [
+                        {
+                            "Type": "A",
+                            "TTL": 10
+                        }
+                    ]
+                },
+                "HealthCheckCustomConfig": {
+                    "FailureThreshold": 1
+                },
+                "CreateDate": "2023-11-03T02:36:27.877000+00:00"
+            }
+        ],
+        "ResponseMetadata": {}
+    }
+}

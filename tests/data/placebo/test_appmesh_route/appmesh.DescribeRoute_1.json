@@ -1,0 +1,41 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "route": {
+            "meshName": "m1",
+            "metadata": {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualRouter/vr1/route/route1",
+                "createdAt": "2023-11-03T02:36:27.877000+00:00",
+                "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558196",
+                "uid": "6c3fbc45-37ad-40db-b635-2d24e07cbe83",
+                "version": 1
+            },
+            "routeName": "route1",
+            "spec": {
+                "httpRoute": {
+                    "action": {
+                        "weightedTargets": [
+                            {
+                                "port": 8080,
+                                "virtualNode": "vn1",
+                                "weight": 100
+                            }
+                        ]
+                    },
+                    "match": {
+                        "port": 8080,
+                        "prefix": "/"
+                    }
+                },
+                "priority": 1000
+            },
+            "status": {
+                "status": "ACTIVE"
+            },
+            "virtualRouterName": "vr1"
+        }
+    }
+}

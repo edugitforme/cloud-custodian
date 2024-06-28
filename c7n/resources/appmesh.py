@@ -324,3 +324,445 @@ class AppmeshVirtualNode(ChildResourceManager):
             'virtualNodes',
             None,
         )
+
+
+class DescribeVirtualServiceDefinition(ChildDescribeSource):
+    # This method is called in event mode and not pull mode.
+    # Its purpose is to take a list of virtual service ARN's that the
+    # framework has extracted from the events according to the policy yml file
+    # and then call the describe function for the virtual service.
+    def get_resources(self, arns, cache=True):
+        # Split each arn into its parts and then return an object
+        # that has the two names we need for the describe operation.
+        # Mesh virtual service arn looks like : arn:aws:appmesh:us-east-1:123456789012:mesh/app1/virtualService/serviceB.svc.cluster.local  # noqa
+
+        mesh_and_child_names = [
+            {"meshName": parts[0], "virtualServiceName": parts[2]} for parts in
+            [Arn.parse(arn).resource.split('/') for arn in arns]
+        ]
+
+        return self._describe(mesh_and_child_names)
+
+    # Called during event mode and pull mode, and it's function is to take id's
+    # from some provided data and return the complete description of the resource.
+    # The resources argument is a list of objects that contains at least
+    # the fields meshName and virtualServiceName.
+    #
+    # If we are in event mode then the resources will already be fully populated because
+    # augment() is called with the fully populated output of get_resources() above.
+    # But, if we are in pull mode then we only have some basic data returned from the
+    # "parent" query enum function so we have to get the full details.
+    def augment(self, resources):
+        # Can detect if we are in event mode because the resource we get from
+        # the event has the metadata field present. By contrast when we are in pull
+        # mode then all we have is some skinny data from the parent's list function.
+        event_mode = resources and "metadata" in resources[0]
+        if not event_mode:
+            resources = self._describe(resources)
+
+        # fill in the tags
+        return universal_augment(self.manager, resources)
+
+    # takes a list of objects with fields meshName and virtualServiceName
+    def _describe(self, mesh_and_child_names):
+        results = []
+        client = local_session(self.manager.session_factory).client('appmesh')
+
+        for names in mesh_and_child_names:
+            response = self.manager.retry(client.describe_virtual_service,
+                                          meshName=names["meshName"],
+                                          virtualServiceName=names["virtualServiceName"], )
+            resource = response['virtualService']
+
+            results.append(resource)
+        return results
+
+
+@resources.register('appmesh-virtualservice')
+class AppmeshVirtualService(ChildResourceManager):
+    source_mapping = {
+        'describe': DescribeVirtualServiceDefinition,
+        'describe-child': DescribeVirtualServiceDefinition,
+        'config': ConfigSource,
+    }
+
+    # interior class that defines the aws metadata for resource
+    # see c7n/query.py for documentation on fields.
+    class resource_type(TypeInfo):
+        # turn on support for cloundtrail for child resources
+        supports_trailevents = True
+
+        service = 'appmesh'
+
+        # arn_type is used to manufacture arn's according to a recipe.
+        # however in this case we don't need it because we've defined our
+        # own get_arns function below.
+        # arn_type = None
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html  # noqa
+        # Optional - don't know what functionality relies on this.but this is the correct value.
+        cfn_type = 'AWS::AppMesh::VirtualService'
+
+        # locate the right value here ...
+        # https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html  # noqa
+        config_type = 'AWS::AppMesh::VirtualService'
+
+        # turn on automatic collection of tags and tag filtering
+        universal_taggable = object()
+
+        # id: is not used by the resource collection process for this type because
+        # this is a ChildResourceManager and instead it is the parent_spec function that drives
+        # collection of "mesh id's".
+        # However, it is still used by "report" operation so let's define it as something
+        # even if not ideal.
+        id = "metadata.arn"
+
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appmesh-virtualservice.html  # noqa
+        # arn: not needed since we have defined our own "get_arns()" below
+        arn = "metadata.arn"
+
+        # This "name" value appears in the "report" command output.
+        # example: custodian  report --format json  -s report-out mesh-policy.yml
+        # see the virtualServiceName field here...
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-virtual-service.html # noqa
+        name = 'virtualServiceName'
+
+        # refers to a field in the metadata response of the describe function
+        # appears in the "report" operation
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-virtual-service.html
+        date = 'metadata.createdAt'
+
+        # When we define a parent_spec then the parent_spec
+        # provides the driving result set from which parent resource id's will be picked.
+        # In this case the parent resource id is the meshName.
+        # This is then iterated across and the enum_spec is called once for each parent 'id'.
+        #
+        # "appmesh-mesh" - identifies the parent data source (ie AppmeshMesh).
+        # "meshName" - is the field from the parent spec result that will be pulled out and
+        # used to drive the vgw enum_spec.
+        parent_spec = ('appmesh-mesh', 'meshName', None)
+
+        # enum_spec's list function is called once for each key (meshName) returned from
+        # the parent_spec.
+        # 'virtualServices' - is path in the enum_spec response to locate the virtual
+        # services for the given meshName.
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appmesh/client/list_virtual_services.html  # noqa
+        enum_spec = (
+            'list_virtual_services',
+            'virtualServices',
+            None,
+        )
+
+
+class DescribeVirtualRouterDefinition(ChildDescribeSource):
+    # This method is called in event mode and not pull mode.
+    # Its purpose is to take a list of virtual routers ARN's that the
+    # framework has extracted from the events according to the policy yml file
+    # and then call the describe function for the virtual router.
+    def get_resources(self, arns, cache=True):
+        # Split each arn into its parts and then return an object
+        # that has the two names we need for the describe operation.
+        # Mesh virtual router arn looks like : arn:aws:appmesh:us-east-1:123456789012:mesh/app1/virtualRouter/vrServiceB  # noqa
+
+        mesh_and_child_names = [
+            {"meshName": parts[0], "virtualRouterName": parts[2]} for parts in
+            [Arn.parse(arn).resource.split('/') for arn in arns]
+        ]
+
+        return self._describe(mesh_and_child_names)
+
+    # Called during event mode and pull mode, and it's function is to take id's
+    # from some provided data and return the complete description of the resource.
+    # The resources argument is a list of objects that contains at least
+    # the fields meshName and virtualRouterName.
+    #
+    # If we are in event mode then the resources will already be fully populated because
+    # augment() is called with the fully populated output of get_resources() above.
+    # But, if we are in pull mode then we only have some basic data returned from the
+    # "parent" query enum function so we have to get the full details.
+    def augment(self, resources):
+        # Can detect if we are in event mode because the resource we get from
+        # the event has the metadata field present. By contrast when we are in pull
+        # mode then all we have is some skinny data from the parent's list function.
+        event_mode = resources and "metadata" in resources[0]
+        if not event_mode:
+            resources = self._describe(resources)
+
+        # fill in the tags
+        return universal_augment(self.manager, resources)
+
+    # takes a list of objects with fields meshName and virtualRouterName
+    def _describe(self, mesh_and_child_names):
+        results = []
+        client = local_session(self.manager.session_factory).client('appmesh')
+
+        for names in mesh_and_child_names:
+            response = self.manager.retry(client.describe_virtual_router,
+                                          meshName=names["meshName"],
+                                          virtualRouterName=names["virtualRouterName"], )
+            resource = response['virtualRouter']
+
+            results.append(resource)
+        return results
+
+
+@resources.register('appmesh-virtualrouter')
+class AppmeshVirtualRouter(ChildResourceManager):
+    source_mapping = {
+        'describe': DescribeVirtualRouterDefinition,
+        'describe-child': DescribeVirtualRouterDefinition,
+        'config': ConfigSource,
+    }
+
+    # interior class that defines the aws metadata for resource
+    # see c7n/query.py for documentation on fields.
+    class resource_type(TypeInfo):
+        # turn on support for cloundtrail for child resources
+        supports_trailevents = True
+
+        service = 'appmesh'
+
+        # arn_type is used to manufacture arn's according to a recipe.
+        # however in this case we don't need it because we've defined our
+        # own get_arns function below.
+        # arn_type = None
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html  # noqa
+        # Optional - don't know what functionality relies on this.but this is the correct value.
+        cfn_type = 'AWS::AppMesh::VirtualRouter'
+
+        # locate the right value here ...
+        # https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html  # noqa
+        config_type = 'AWS::AppMesh::VirtualRouter'
+
+        # turn on automatic collection of tags and tag filtering
+        universal_taggable = object()
+
+        # id: is not used by the resource collection process for this type because
+        # this is a ChildResourceManager and instead it is the parent_spec function that drives
+        # collection of "mesh id's".
+        # However, it is still used by "report" operation so let's define it as something
+        # even if not ideal.
+        id = "metadata.arn"
+
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appmesh-virtualrouter.html  # noqa
+        # arn: not needed since we have defined our own "get_arns()" below
+        arn = "metadata.arn"
+
+        # This "name" value appears in the "report" command output.
+        # example: custodian  report --format json  -s report-out mesh-policy.yml
+        # see the virtualRoutersName field here...
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-virtual-router.html # noqa
+        name = 'virtualRouterName'
+
+        # refers to a field in the metadata response of the describe function
+        # appears in the "report" operation
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-virtual-router.html
+        date = 'metadata.createdAt'
+
+        # When we define a parent_spec then the parent_spec
+        # provides the driving result set from which parent resource id's will be picked.
+        # In this case the parent resource id is the meshName.
+        # This is then iterated across and the enum_spec is called once for each parent 'id'.
+        #
+        # "appmesh-mesh" - identifies the parent data source (ie AppmeshMesh).
+        # "meshName" - is the field from the parent spec result that will be pulled out and
+        # used to drive the vgw enum_spec.
+        parent_spec = ('appmesh-mesh', 'meshName', None)
+
+        # enum_spec's list function is called once for each key (meshName) returned from
+        # the parent_spec.
+        # 'virtualRouters' - is path in the enum_spec response to locate the virtual
+        # routers for the given meshName.
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appmesh/client/list_virtual_routers.html  # noqa
+        enum_spec = (
+            'list_virtual_routers',
+            'virtualRouters',
+            None,
+        )
+
+
+class DescribeRouteDefinition(DescribeVirtualRouterDefinition):
+    def _describe(self, mesh_and_child_names):
+        results = []
+        client = local_session(self.manager.session_factory).client('appmesh')
+
+        for names in mesh_and_child_names:
+            response = self.manager.retry(client.list_routes,
+                                          meshName=names["meshName"],
+                                          virtualRouterName=names["virtualRouterName"])
+            for routes in response['routes']:
+                response = self.manager.retry(client.describe_route,
+                                              meshName=routes["meshName"],
+                                              virtualRouterName=routes["virtualRouterName"],
+                                              routeName=routes['routeName'])
+                resource = response['route']
+                results.append(resource)
+        return results
+
+
+@resources.register('appmesh-route')
+class AppmeshRoute(AppmeshVirtualRouter):
+    source_mapping = {
+        'describe': DescribeRouteDefinition,
+        'describe-child': DescribeRouteDefinition,
+        'config': ConfigSource,
+    }
+
+    # interior class that defines the aws metadata for resource
+    # see c7n/query.py for documentation on fields.
+    class resource_type(TypeInfo):
+        # turn on support for cloundtrail for child resources
+        supports_trailevents = True
+
+        service = 'appmesh'
+
+        # arn_type is used to manufacture arn's according to a recipe.
+        # however in this case we don't need it because we've defined our
+        # own get_arns function below.
+        # arn_type = None
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html  # noqa
+        # Optional - don't know what functionality relies on this.but this is the correct value.
+        cfn_type = 'AWS::AppMesh::Route'
+
+        # locate the right value here ...
+        # https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html  # noqa
+        config_type = 'AWS::AppMesh::Route'
+
+        # turn on automatic collection of tags and tag filtering
+        universal_taggable = object()
+
+        # id: is not used by the resource collection process for this type because
+        # this is a ChildResourceManager and instead it is the parent_spec function that drives
+        # collection of "mesh id's".
+        # However, it is still used by "report" operation so let's define it as something
+        # even if not ideal.
+        id = "metadata.arn"
+
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appmesh-route.html  # noqa
+        arn = "metadata.arn"
+
+        # This "name" value appears in the "report" command output.
+        # example: custodian  report --format json  -s report-out mesh-policy.yml
+        # see the virtualRoutersName field here...
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-route.html # noqa
+        name = 'routeName'
+
+        # refers to a field in the metadata response of the describe function
+        # appears in the "report" operation
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-route.html
+        date = 'metadata.createdAt'
+
+        # When we define a parent_spec then the parent_spec
+        # provides the driving result set from which parent resource id's will be picked.
+        # In this case the parent resource id is the meshName.
+        # This is then iterated across and the enum_spec is called once for each parent 'id'.
+        #
+        # "appmesh-mesh" - identifies the parent data source (ie AppmeshMesh).
+        # "meshName" - is the field from the parent spec result that will be pulled out and
+        # used to drive the vgw enum_spec.
+        parent_spec = ('appmesh-mesh', 'meshName', None)
+
+        # enum_spec's list function is called once for each key (meshName) returned from
+        # the parent_spec.
+        # 'virtualRouters' - is path in the enum_spec response to locate the virtual
+        # routers for the given meshName.
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appmesh/client/list_virtual_routers.html  # noqa
+        enum_spec = (
+            'list_virtual_routers',
+            'virtualRouters',
+            None,
+        )
+
+
+class DescribeGatewayDefinition(DescribeVirtualGatewayDefinition):
+    def _describe(self, mesh_and_child_names):
+        results = []
+        client = local_session(self.manager.session_factory).client('appmesh')
+
+        for names in mesh_and_child_names:
+            response = self.manager.retry(client.list_gateway_routes,
+                                          meshName=names["meshName"],
+                                          virtualGatewayName=names["virtualGatewayName"], )
+
+            for routes in response['gatewayRoutes']:
+                response = self.manager.retry(client.describe_gateway_route,
+                                              meshName=routes["meshName"],
+                                              virtualGatewayName=routes["virtualGatewayName"],
+                                              gatewayRouteName=routes['gatewayRouteName'])
+                resource = response['gatewayRoute']
+                results.append(resource)
+        return results
+
+
+@resources.register('appmesh-gateway-route')
+class AppmeshGatewayRoute(AppmeshVirtualGateway):
+    source_mapping = {
+        'describe': DescribeGatewayDefinition,
+        'describe-child': DescribeGatewayDefinition,
+        'config': ConfigSource,
+    }
+
+    # interior class that defines the aws metadata for resource
+    # see c7n/query.py for documentation on fields.
+    class resource_type(TypeInfo):
+        # turn on support for cloundtrail for child resources
+        supports_trailevents = True
+
+        service = 'appmesh'
+
+        # arn_type is used to manufacture arn's according to a recipe.
+        # however in this case we don't need it because we've defined our
+        # own get_arns function below.
+        # arn_type = None
+
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html  # noqa
+        # Optional - don't know what functionality relies on this.but this is the correct value.
+        cfn_type = 'AWS::AppMesh::GatewayRoute'
+
+        # locate the right value here ...
+        # https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html  # noqa
+        config_type = 'AWS::AppMesh::GatewayRoute'
+
+        # turn on automatic collection of tags and tag filtering
+        universal_taggable = object()
+
+        # id: is not used by the resource collection process for this type because
+        # this is a ChildResourceManager and instead it is the parent_spec function that drives
+        # collection of "mesh id's".
+        # However, it is still used by "report" operation so let's define it as something
+        # even if not ideal.
+        id = "metadata.arn"
+
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appmesh-gatewayroute.html  # noqa
+        arn = "metadata.arn"
+
+        # This "name" value appears in the "report" command output.
+        # example: custodian  report --format json  -s report-out mesh-policy.yml
+        # see the virtualGatewayName field here...
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-gateway-route.html # noqa
+        name = 'gatewayRouteName'
+
+        # refers to a field in the metadata response of the describe function
+        # appears in the "report" operation
+        # https://docs.aws.amazon.com/cli/latest/reference/appmesh/describe-gateway-route.html
+        date = 'metadata.createdAt'
+
+        # When we define a parent_spec then the parent_spec
+        # provides the driving result set from which parent resource id's will be picked.
+        # In this case the parent resource id is the meshName.
+        # This is then iterated across and the enum_spec is called once for each parent 'id'.
+        #
+        # "appmesh-mesh" - identifies the parent data source (ie AppmeshMesh).
+        # "meshName" - is the field from the parent spec result that will be pulled out and
+        # used to drive the vgw enum_spec.
+        parent_spec = ('appmesh-mesh', 'meshName', None)
+
+        # enum_spec's list function is called once for each key (meshName) returned from
+        # the parent_spec.
+        # 'virtualGateways' - is path in the enum_spec response to locate the virtual
+        # gateways for the given meshName.
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appmesh/client/list_virtual_gateways.html  # noqa
+        enum_spec = (
+            'list_virtual_gateways',
+            'virtualGateways',
+            None,
+        )

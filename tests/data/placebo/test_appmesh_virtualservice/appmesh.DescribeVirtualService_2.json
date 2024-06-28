@@ -1,0 +1,29 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "virtualService": {
+            "meshName": "m1",
+            "metadata": {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualService/vs2.m1.us-east-1.local",
+                "createdAt": "2023-11-03T02:36:27.877000+00:00",
+                "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558198",
+                "uid": "f5b0ace5-d9e7-4f16-ac9c-44c30dc0ad30",
+                "version": 1
+            },
+            "spec": {
+                "provider": {
+                    "virtualRouter": {
+                        "virtualRouterName": "vr2"
+                    }
+                }
+            },
+            "status": {
+                "status": "ACTIVE"
+            },
+            "virtualServiceName": "vs2.m1.us-east-1.local"
+        }
+    }
+}

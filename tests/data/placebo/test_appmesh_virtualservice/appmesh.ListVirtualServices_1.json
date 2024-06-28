@@ -1,0 +1,28 @@
+{
+    "status_code": 200,
+    "data": {
+        "ResponseMetadata": {},
+        "virtualServices": [
+            {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualService/vs1.m1.us-east-1.local",
+                "createdAt": "2023-11-03T02:36:27.877000+00:00",
+                "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
+                "meshName": "m1",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558196",
+                "version": 1,
+                "virtualServiceName": "vs1.m1.us-east-1.local"
+            },
+            {
+                "arn": "arn:aws:appmesh:us-east-1:644160558196:mesh/m1/virtualService/vs2.m1.us-east-1.local",
+                "createdAt": "2023-11-03T02:36:27.877000+00:00",
+                "lastUpdatedAt": "2023-11-03T02:36:27.877000+00:00",
+                "meshName": "m1",
+                "meshOwner": "644160558196",
+                "resourceOwner": "644160558197",
+                "version": 1,
+                "virtualServiceName": "vs2.m1.us-east-1.local"
+            }
+        ]
+    }
+}
