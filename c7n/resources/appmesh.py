@@ -397,7 +397,7 @@ class AppmeshRoute(ListItemFilter):
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
     )
-    permissions = ('appmesh:DescribeVirtualRoute',)
+    permissions = ('appmesh:DescribeVirtualRouter',)
 
     def __init__(self, data, manager=None):
         super().__init__(data, manager)
