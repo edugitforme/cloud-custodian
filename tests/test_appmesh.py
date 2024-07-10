@@ -726,7 +726,7 @@ class VirtualService(BaseTest):
                 "resource": "aws.appmesh-mesh",
                 "filters": [
                     {
-                        "type": "virtual-service",
+                        "type": "appmesh-service",
                         "attrs": [
                             {
                                 "or": [
@@ -777,7 +777,7 @@ class VirtualRouter(BaseTest):
                 "resource": "aws.appmesh-mesh",
                 "filters": [
                     {
-                        "type": "virtual-router",
+                        "type": "appmesh-router",
                         "attrs": [
                             {
                                 "type": "value",
@@ -848,11 +848,11 @@ class AppmeshGatewayRoute(BaseTest):
         # test data has 2 VGW but only 1 has a port of 123
         p = self.load_policy(
             {
-                "name": "appmesh-route-policy",
+                "name": "appmesh-gateway-route-policy",
                 "resource": "aws.appmesh-virtualgateway",
                 "filters": [
                     {
-                        "type": "gateway-route",
+                        "type": "appmesh-gateway-route",
                         "attrs": [
                             {
                                 "type": "value",

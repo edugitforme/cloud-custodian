@@ -19,7 +19,7 @@ from c7n.utils import (
 class DescribeServiceDiscoveryNamespace(DescribeSource):
     # override default describe augment to get tags
     def augment(self, resources):
-        detailed_resources = super(DescribeServiceDiscoveryNamespace, self).augment(resources)
+        detailed_resources = super().augment(resources)
         tagged_resources = universal_augment(self.manager, detailed_resources)
         return tagged_resources
 
@@ -65,6 +65,22 @@ class ServiceDiscoveryNamespace(QueryResourceManager):
 
 @ServiceDiscoveryNamespace.filter_registry.register('servicediscovery-instance')
 class SdNamespaceInstance(ListItemFilter):
+
+    """Filter on service discovery instances in the namespaces as List-Item Filters.
+
+    .. code-block:: yaml
+
+        policies:
+          - name: servicediscovery-instance-policy
+            resource: servicediscovery-namespace
+            filters:
+              - type: servicediscovery-instance
+                key: "Services[].Instances[]",
+                attrs:
+                  - or:
+                      - "Attributes.AWS_EC2_INSTANCE_ID": "present"
+
+    """
 
     schema = type_schema(
         'servicediscovery-instance',
