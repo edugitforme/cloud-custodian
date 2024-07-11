@@ -329,11 +329,34 @@ class AppmeshVirtualNode(ChildResourceManager):
         )
 
 
-@AppmeshMesh.filter_registry.register('virtual-service')
+@AppmeshMesh.filter_registry.register('appmesh-service')
 class VirtualService(ListItemFilter):
 
+    """Filter on appmesh virtual services as List-Item Filters.
+
+    .. code-block:: yaml
+
+        policies:
+          - name: appmesh-virtual-service-policy
+            resource: aws.appmesh-mesh
+            filters:
+              - type: appmesh-service
+                attrs:
+                  - or :
+                      - type: value
+                        key: "meshOwner"
+                        op: ne
+                        value: "resourceOwner"
+                        value_type: "expr"
+                      - not :
+                          - type: value
+                            key: "virtualServiceName"
+                            op : regex
+                            value: '^.*.local$'
+    """
+
     schema = type_schema(
-        'virtual-service',
+        'appmesh-service',
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
@@ -358,11 +381,29 @@ class VirtualService(ListItemFilter):
         return super().process(resources, event)
 
 
-@AppmeshMesh.filter_registry.register('virtual-router')
+@AppmeshMesh.filter_registry.register('appmesh-router')
 class VirtualRouter(ListItemFilter):
 
+    """Filter on appmesh virtual routers as List-Item Filters.
+
+    .. code-block:: yaml
+
+        policies:
+          - name: appmesh-router-policy
+            resource: aws.appmesh-mesh
+            filters:
+              - type: appmesh-router
+                attrs:
+                  - type: value
+                    key: "metadata.meshOwner"
+                    op: ne
+                    value: "metadata.resourceOwner"
+                    value_type: "expr"
+
+    """
+
     schema = type_schema(
-        'virtual-router',
+        'appmesh-router',
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
@@ -389,6 +430,25 @@ class VirtualRouter(ListItemFilter):
 
 @AppmeshMesh.filter_registry.register('appmesh-route')
 class AppmeshRoute(ListItemFilter):
+
+    """Filter on appmesh routes from virtual routers as List-Item Filters.
+
+    .. code-block:: yaml
+
+        policies:
+          - name: appmesh-route-policy
+            resource: aws.appmesh-mesh
+            filters:
+              - type: appmesh-route
+                key: "virtualRouters[].routes[]"
+                attrs:
+                  - type: value
+                    key: "metadata.meshOwner"
+                    op: ne
+                    value: "metadata.resourceOwner"
+                    value_type: "expr"
+
+    """
 
     schema = type_schema(
         'appmesh-route',
@@ -421,11 +481,28 @@ class AppmeshRoute(ListItemFilter):
         return super().process(resources, event)
 
 
-@AppmeshVirtualGateway.filter_registry.register('gateway-route')
+@AppmeshVirtualGateway.filter_registry.register('appmesh-gateway-route')
 class AppmeshGatewayRoute(ListItemFilter):
+    """Filter on appmesh gateway routes as List-Item Filters.
+
+    .. code-block:: yaml
+
+        policies:
+          - name: appmesh-gateway-route-policy
+            resource: aws.appmesh-virtualgateway
+            filters:
+              - type: appmesh-gateway-route
+                attrs:
+                  - type: value
+                    key: "metadata.meshOwner"
+                    op: ne
+                    value: "metadata.resourceOwner"
+                    value_type: "expr"
+
+    """
 
     schema = type_schema(
-        'gateway-route',
+        'appmesh-gateway-route',
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
