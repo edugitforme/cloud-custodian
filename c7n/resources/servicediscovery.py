@@ -68,6 +68,8 @@ class SdNamespaceInstance(ListItemFilter):
 
     """Filter on service discovery instances in the namespaces as List-Item Filters.
 
+    :example:
+
     .. code-block:: yaml
 
         policies:
@@ -75,10 +77,10 @@ class SdNamespaceInstance(ListItemFilter):
             resource: servicediscovery-namespace
             filters:
               - type: servicediscovery-instance
-                key: "Services[].Instances[]",
+                key: Services[].Instances[],
                 attrs:
                   - or:
-                      - "Attributes.AWS_EC2_INSTANCE_ID": "present"
+                      - Attributes.AWS_EC2_INSTANCE_ID: present
 
     """
 

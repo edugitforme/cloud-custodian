@@ -334,6 +334,8 @@ class VirtualService(ListItemFilter):
 
     """Filter on appmesh virtual services as List-Item Filters.
 
+    :example:
+
     .. code-block:: yaml
 
         policies:
@@ -344,13 +346,13 @@ class VirtualService(ListItemFilter):
                 attrs:
                   - or :
                       - type: value
-                        key: "meshOwner"
+                        key: meshOwner
                         op: ne
-                        value: "resourceOwner"
-                        value_type: "expr"
+                        value: resourceOwner
+                        value_type: expr
                       - not :
                           - type: value
-                            key: "virtualServiceName"
+                            key: virtualServiceName
                             op : regex
                             value: '^.*.local$'
     """
@@ -386,6 +388,8 @@ class VirtualRouter(ListItemFilter):
 
     """Filter on appmesh virtual routers as List-Item Filters.
 
+    :example:
+
     .. code-block:: yaml
 
         policies:
@@ -395,10 +399,10 @@ class VirtualRouter(ListItemFilter):
               - type: appmesh-router
                 attrs:
                   - type: value
-                    key: "metadata.meshOwner"
+                    key: metadata.meshOwner
                     op: ne
-                    value: "metadata.resourceOwner"
-                    value_type: "expr"
+                    value: metadata.resourceOwner
+                    value_type: expr
 
     """
 
@@ -433,6 +437,8 @@ class AppmeshRoute(ListItemFilter):
 
     """Filter on appmesh routes from virtual routers as List-Item Filters.
 
+    :example:
+
     .. code-block:: yaml
 
         policies:
@@ -440,12 +446,12 @@ class AppmeshRoute(ListItemFilter):
             resource: aws.appmesh-mesh
             filters:
               - type: appmesh-route
-                key: "virtualRouters[].routes[]"
+                key: virtualRouters[].routes[]
                 attrs:
                   - type: value
-                    key: "metadata.meshOwner"
+                    key: metadata.meshOwner
                     op: ne
-                    value: "metadata.resourceOwner"
+                    value: metadata.resourceOwner
                     value_type: "expr"
 
     """
@@ -485,6 +491,8 @@ class AppmeshRoute(ListItemFilter):
 class AppmeshGatewayRoute(ListItemFilter):
     """Filter on appmesh gateway routes as List-Item Filters.
 
+    :example:
+
     .. code-block:: yaml
 
         policies:
@@ -494,10 +502,10 @@ class AppmeshGatewayRoute(ListItemFilter):
               - type: appmesh-gateway-route
                 attrs:
                   - type: value
-                    key: "metadata.meshOwner"
+                    key: metadata.meshOwner
                     op: ne
-                    value: "metadata.resourceOwner"
-                    value_type: "expr"
+                    value: metadata.resourceOwner
+                    value_type: expr
 
     """
 
