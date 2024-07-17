@@ -399,9 +399,9 @@ class VirtualRouter(ListItemFilter):
               - type: appmesh-router
                 attrs:
                   - type: value
-                    key: metadata.meshOwner
+                    key: meshOwner
                     op: ne
-                    value: metadata.resourceOwner
+                    value: resourceOwner
                     value_type: expr
 
     """
@@ -449,9 +449,9 @@ class AppmeshRoute(ListItemFilter):
                 key: virtualRouters[].routes[]
                 attrs:
                   - type: value
-                    key: metadata.meshOwner
+                    key: meshOwner
                     op: ne
-                    value: metadata.resourceOwner
+                    value: resourceOwner
                     value_type: "expr"
 
     """
@@ -502,9 +502,9 @@ class AppmeshGatewayRoute(ListItemFilter):
               - type: appmesh-gateway-route
                 attrs:
                   - type: value
-                    key: metadata.meshOwner
+                    key: meshOwner
                     op: ne
-                    value: metadata.resourceOwner
+                    value: resourceOwner
                     value_type: expr
 
     """
