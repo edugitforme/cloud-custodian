@@ -63,7 +63,7 @@ class ServiceDiscoveryNamespace(QueryResourceManager):
         date = 'CreateDate'
 
 
-@ServiceDiscoveryNamespace.filter_registry.register('servicediscovery-instance')
+@ServiceDiscoveryNamespace.filter_registry.register('service-instance')
 class SdNamespaceInstance(ListItemFilter):
 
     """Filter on service discovery instances in the namespaces as List-Item Filters.
@@ -76,7 +76,7 @@ class SdNamespaceInstance(ListItemFilter):
           - name: servicediscovery-instance-policy
             resource: servicediscovery-namespace
             filters:
-              - type: servicediscovery-instance
+              - type: service-instance
                 key: Services[].Instances[],
                 attrs:
                   - or:
@@ -85,7 +85,7 @@ class SdNamespaceInstance(ListItemFilter):
     """
 
     schema = type_schema(
-        'servicediscovery-instance',
+        'service-instance',
         key={'type': 'string'},
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},

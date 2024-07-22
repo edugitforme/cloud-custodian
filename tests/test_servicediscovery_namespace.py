@@ -132,7 +132,7 @@ class ServiceNamespaceInstance(BaseTest):
                 "resource": "servicediscovery-namespace",
                 "filters": [
                     {
-                        "type": "servicediscovery-instance",
+                        "type": "service-instance",
                         "key": "Services[].Instances[]",
                         "attrs": [
                             {

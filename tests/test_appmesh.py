@@ -726,7 +726,7 @@ class VirtualService(BaseTest):
                 "resource": "aws.appmesh-mesh",
                 "filters": [
                     {
-                        "type": "appmesh-service",
+                        "type": "service",
                         "attrs": [
                             {
                                 "or": [
@@ -777,7 +777,7 @@ class VirtualRouter(BaseTest):
                 "resource": "aws.appmesh-mesh",
                 "filters": [
                     {
-                        "type": "appmesh-router",
+                        "type": "router",
                         "attrs": [
                             {
                                 "type": "value",
@@ -813,7 +813,7 @@ class AppmeshRoute(BaseTest):
                 "resource": "aws.appmesh-mesh",
                 "filters": [
                     {
-                        "type": "appmesh-route",
+                        "type": "route",
                         "key": "virtualRouters[].routes[]",
                         "attrs": [
                             {
@@ -852,7 +852,7 @@ class AppmeshGatewayRoute(BaseTest):
                 "resource": "aws.appmesh-virtualgateway",
                 "filters": [
                     {
-                        "type": "appmesh-gateway-route",
+                        "type": "gateway-route",
                         "attrs": [
                             {
                                 "type": "value",

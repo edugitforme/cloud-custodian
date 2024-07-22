@@ -329,7 +329,7 @@ class AppmeshVirtualNode(ChildResourceManager):
         )
 
 
-@AppmeshMesh.filter_registry.register('appmesh-service')
+@AppmeshMesh.filter_registry.register('service')
 class VirtualService(ListItemFilter):
 
     """Filter on appmesh virtual services as List-Item Filters.
@@ -342,7 +342,7 @@ class VirtualService(ListItemFilter):
           - name: appmesh-virtual-service-policy
             resource: aws.appmesh-mesh
             filters:
-              - type: appmesh-service
+              - type: service
                 attrs:
                   - or :
                       - type: value
@@ -358,7 +358,7 @@ class VirtualService(ListItemFilter):
     """
 
     schema = type_schema(
-        'appmesh-service',
+        'service',
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
@@ -383,7 +383,7 @@ class VirtualService(ListItemFilter):
         return super().process(resources, event)
 
 
-@AppmeshMesh.filter_registry.register('appmesh-router')
+@AppmeshMesh.filter_registry.register('router')
 class VirtualRouter(ListItemFilter):
 
     """Filter on appmesh virtual routers as List-Item Filters.
@@ -396,7 +396,7 @@ class VirtualRouter(ListItemFilter):
           - name: appmesh-router-policy
             resource: aws.appmesh-mesh
             filters:
-              - type: appmesh-router
+              - type: router
                 attrs:
                   - type: value
                     key: meshOwner
@@ -407,7 +407,7 @@ class VirtualRouter(ListItemFilter):
     """
 
     schema = type_schema(
-        'appmesh-router',
+        'router',
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
@@ -432,7 +432,7 @@ class VirtualRouter(ListItemFilter):
         return super().process(resources, event)
 
 
-@AppmeshMesh.filter_registry.register('appmesh-route')
+@AppmeshMesh.filter_registry.register('route')
 class AppmeshRoute(ListItemFilter):
 
     """Filter on appmesh routes from virtual routers as List-Item Filters.
@@ -445,7 +445,7 @@ class AppmeshRoute(ListItemFilter):
           - name: appmesh-route-policy
             resource: aws.appmesh-mesh
             filters:
-              - type: appmesh-route
+              - type: route
                 key: virtualRouters[].routes[]
                 attrs:
                   - type: value
@@ -457,7 +457,7 @@ class AppmeshRoute(ListItemFilter):
     """
 
     schema = type_schema(
-        'appmesh-route',
+        'route',
         key={'type': 'string'},
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
@@ -487,7 +487,7 @@ class AppmeshRoute(ListItemFilter):
         return super().process(resources, event)
 
 
-@AppmeshVirtualGateway.filter_registry.register('appmesh-gateway-route')
+@AppmeshVirtualGateway.filter_registry.register('gateway-route')
 class AppmeshGatewayRoute(ListItemFilter):
     """Filter on appmesh gateway routes as List-Item Filters.
 
@@ -499,7 +499,7 @@ class AppmeshGatewayRoute(ListItemFilter):
           - name: appmesh-gateway-route-policy
             resource: aws.appmesh-virtualgateway
             filters:
-              - type: appmesh-gateway-route
+              - type: gateway-route
                 attrs:
                   - type: value
                     key: meshOwner
@@ -510,7 +510,7 @@ class AppmeshGatewayRoute(ListItemFilter):
     """
 
     schema = type_schema(
-        'appmesh-gateway-route',
+        'gateway-route',
         attrs={'$ref': '#/definitions/filters_common/list_item_attrs'},
         count={'type': 'number'},
         count_op={'$ref': '#/definitions/filters_common/comparison_operators'}
